@@ -1,0 +1,3 @@
+Tvrtka A, Ulica A bb., Grad A, tvrtka_a@tvrtka.com
+Tvrtka B, Ulica B 33, Grad B, mail_sluzbeni@domena.net
+Tvrtka C, Ulica C 21, Grad C, hresources@ctvrtka.hr
