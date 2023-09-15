@@ -8,10 +8,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public class ToolBar extends JPanel implements ActionListener {
 
-    private JButton clearButton;
+    public static JButton clearButton;
     private JButton readFileButton;
     private JButton saveFileButton;
 
@@ -38,6 +39,7 @@ public class ToolBar extends JPanel implements ActionListener {
         clearButton.setPreferredSize(new Dimension(100, 40));
         readFileButton.setPreferredSize(new Dimension(100, 40));
         saveFileButton.setPreferredSize(new Dimension(100, 40));
+        clearButton.setEnabled(false);
         add(clearButton);
         add(readFileButton);
         add(saveFileButton);
@@ -48,6 +50,7 @@ public class ToolBar extends JPanel implements ActionListener {
         readFileButton.addActionListener(this);
         saveFileButton.addActionListener(this);
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -72,21 +75,14 @@ public class ToolBar extends JPanel implements ActionListener {
                 }
             }
         } else if (e.getSource() == saveFileButton) {
-            JFileChooser fileChooser = new JFileChooser();
-            int response = fileChooser.showSaveDialog(null);
-            if (response == JFileChooser.APPROVE_OPTION) {
-                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
-                File file = new File(fileName);
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(file);
-                    fos.write(ViewPanel.textArea.getText().getBytes());
-                    fos.flush();
-                    fos.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+            Person person = null;
+            try {
+                person = new Person(0, 0, null);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
+            person.getPersons();
+
         }
     }
 
@@ -95,6 +91,8 @@ public class ToolBar extends JPanel implements ActionListener {
         private int cnt = 0;
         private double bmi;
         private String ageGroup;
+
+        ArrayList<Person> persons = new ArrayList<>();
 
         public Person(int id, double bmi, String ageGroup) throws FileNotFoundException {
             this.id = cnt++;
@@ -114,14 +112,23 @@ public class ToolBar extends JPanel implements ActionListener {
             return ageGroup;
         }
 
-        @Override
-        public String toString() {
-            return "Person{" +
-                    "id=" + id +
-                    ", bmi=" + bmi +
-                    ", ageGroup='" + ageGroup + '\'' +
-                    '}';
+        public ArrayList<Person> getPersons() {
+            JFileChooser fileChooser = new JFileChooser();
+            int response = fileChooser.showSaveDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                File file = new File(fileName);
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(file);
+                    fos.write(ViewPanel.textArea.getText().getBytes());
+                    fos.flush();
+                    fos.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return persons;
         }
-
     }
 }

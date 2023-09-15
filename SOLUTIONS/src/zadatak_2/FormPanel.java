@@ -82,6 +82,7 @@ public class FormPanel extends JPanel {
             String resultString = "Height: " + height + "\nWeight: " + weight + "\nAge group: " + ageGroup;
             Double result = weightDouble / (heightDouble * heightDouble);
             ViewPanel.textArea.setText(resultString + "\nBMI: " + result);
+            ToolBar.clearButton.setEnabled(true);
             resetForm();
         });
 
