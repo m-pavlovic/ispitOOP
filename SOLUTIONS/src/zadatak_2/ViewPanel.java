@@ -27,5 +27,9 @@ public class ViewPanel extends JPanel {
         return textArea;
     }
 
+    public static void setTextArea(String text) {
+        textArea.append(text + "\n");
+    }
+
 
 }

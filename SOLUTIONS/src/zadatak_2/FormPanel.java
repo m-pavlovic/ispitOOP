@@ -2,6 +2,8 @@ package zadatak_2;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FormPanel extends JPanel {
 
@@ -15,6 +17,7 @@ public class FormPanel extends JPanel {
     JRadioButton seniorButton;
     JRadioButton juniorButton;
     ButtonGroup buttonGroup;
+    private FormPanelListener formPanelListener;
 
     FormPanel() {
         setLayout(null);
@@ -59,32 +62,58 @@ public class FormPanel extends JPanel {
         add(juniorButton);
     }
 
-    private void activateComps() {
-        button.addActionListener(e -> {
-            String height = heightField.getText();
-            Double heightDouble = Double.parseDouble(height);
-            if (heightDouble < 0.0) {
-                JOptionPane.showMessageDialog(null, "Height must be a positive number!");
-                return;
-            }
-            String weight = weightField.getText();
-            Double weightDouble = Double.parseDouble(weight);
-            if (weightDouble < 0.0) {
-                JOptionPane.showMessageDialog(null, "Weight must be a positive number!");
-                return;
-            }
-            String ageGroup = "";
-            if (seniorButton.isSelected()) {
-                ageGroup = "Senior";
-            } else if (juniorButton.isSelected()) {
-                ageGroup = "Junior";
-            }
-            String resultString = "Height: " + height + "\nWeight: " + weight + "\nAge group: " + ageGroup;
-            Double result = weightDouble / (heightDouble * heightDouble);
-            ViewPanel.textArea.setText(resultString + "\nBMI: " + result);
-            ToolBar.clearButton.setEnabled(true);
-            resetForm();
-        });
+    public void setFormPanelListener(FormPanelListener fpe) {
+        this.formPanelListener = fpe;
+    }
+
+    void activateComps() {
+//        button.addActionListener(e -> {
+//            String height = heightField.getText();
+//            Double heightDouble = Double.parseDouble(height);
+//            if (heightDouble < 0.0) {
+//                JOptionPane.showMessageDialog(null, "Height must be a positive number!");
+//                return;
+//            }
+//            String weight = weightField.getText();
+//            Double weightDouble = Double.parseDouble(weight);
+//            if (weightDouble < 0.0) {
+//                JOptionPane.showMessageDialog(null, "Weight must be a positive number!");
+//                return;
+//            }
+//            String ageGroup = "";
+//            if (seniorButton.isSelected()) {
+//                ageGroup = "Senior";
+//            } else if (juniorButton.isSelected()) {
+//                ageGroup = "Junior";
+//            }
+//            String resultString = "Height: " + height + "\nWeight: " + weight + "\nAge group: " + ageGroup;
+//            Double result = weightDouble / (heightDouble * heightDouble);
+           // ViewPanel.textArea.setText(resultString + "\nBMI: " + result);
+//            ToolBar.clearButton.setEnabled(true);
+//            resetForm();
+        if (formPanelListener != null) {
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String height = heightField.getText();
+                    Double heightDouble = Double.parseDouble(height);
+                    String weight = weightField.getText();
+                    Double weightDouble = Double.parseDouble(weight);
+                    String ageGroup = "";
+                    if (seniorButton.isSelected()) {
+                        ageGroup = "Senior";
+                    } else if (juniorButton.isSelected()) {
+                        ageGroup = "Junior";
+                    }
+                    FormPanelEvent fpe = new FormPanelEvent(this, height, weight, ageGroup);
+                    formPanelListener.formPanelEventOccurred(fpe);
+                    Double result = weightDouble / (heightDouble * heightDouble);
+                    ToolBar.clearButton.setEnabled(true);
+                    resetForm();
+
+                }
+            });
+        }
 
     }
 

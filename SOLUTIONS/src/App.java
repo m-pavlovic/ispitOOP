@@ -6,7 +6,7 @@ import java.util.TreeSet;
 public class App {
 
     public static void main(String[] args) {
-        List<Robot> robotList = generateRobots(10);
+        ArrayList<Robot> robotList = generateRobots(10);
         robotList.add(new Robot());
         robotList.add(new Robot());
 
@@ -19,8 +19,8 @@ public class App {
         printCollection(robotSet);
     }
 
-    private static List<Robot> generateRobots(int n) {
-        List<Robot> robots = new ArrayList<>();
+    private static ArrayList<Robot> generateRobots(int n) {
+        ArrayList<Robot> robots = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             robots.add(new Robot());
         }

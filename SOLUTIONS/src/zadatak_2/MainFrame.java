@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
         setResizable(false);
         initComps();
         layoutComps();
+        activateComps();
         setVisible(true);
     }
 
@@ -34,5 +35,19 @@ public class MainFrame extends JFrame {
         add(viewPanel);
         formPanel.setBounds(0, 200, 500, 300);
         add(formPanel);
+    }
+
+    private void activateComps() {
+        formPanel.setFormPanelListener(new FormPanelListener() {
+            @Override
+            public void formPanelEventOccurred(FormPanelEvent fpe) {
+                viewPanel.setTextArea(fpe.getHeight());
+                viewPanel.setTextArea(fpe.getWeight());
+                viewPanel.setTextArea(fpe.getAgeGroup());
+                viewPanel.setTextArea(fpe.getBodyMassIndex());
+            }
+        });
+
+        formPanel.activateComps();
     }
 }
